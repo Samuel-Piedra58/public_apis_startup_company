@@ -3,22 +3,6 @@
     @author: Samuel Piedra
     @created: 07/27/2019
     @github: 
-    
-    @purpose: project will dynamically update the index.html file with 12 random "employees"
-                and display the following information for each "employee":
-                (1) image
-                (2) first and last name
-                (3) email
-                (4) city or location
-             project will also allow the user to select a single "employee" and display a modal window
-            containing the following information:
-                (1) image
-                (2) name
-                (3) email
-                (4) city or location
-                (5) cell number
-                (6) detailed address
-                (7) birthday
 */
 
 // GLOBAL VARIABLES ==============================
@@ -60,15 +44,19 @@ function generateGalleryCards(data) {
   return data;
 }
 
-function attachEventListener(data) {
+function attachCardListener(data) {
   // attach an event listener to all the cards
   const cards = Array.from(document.querySelectorAll("div.gallery .card"));
   cards.forEach((card, cardIndex, cards) => {
-    card.addEventListener("click", () => {
-      // set value for card index currently displayed in the modal...
-      // this value will decrement by 1 when the "prev" button is clicked
-      // and increment by 1 when the next card is clicked
-      let cardIndexDisplayed = cardIndex;
+    // add data-id attribute to keep track of each card (for maintaining context after cards are filtered)
+    card.setAttribute("data-id", `${cardIndex}`);
+
+    // set value for card index currently displayed in the modal...
+    // this value will decrement by 1 when the "prev" button is clicked
+    // and increment by 1 when the next card is clicked
+    let cardIndexDisplayed = card.dataset.id;
+
+    card.addEventListener("click", function() {
       // render the modal window
       const modalWindow = openModalWindow();
 
@@ -80,6 +68,14 @@ function attachEventListener(data) {
 
       // attach event listener to modal window prev button
       modalWindow.prev.addEventListener("click", () => {
+        const availableCards = cards.filter(card => {
+          return card.style.display !== "none";
+        });
+        // I NEED A WAY TO REESTABLISH THE CONTEXT OF AVAILABLE CARDS TO "NAVIGATE" THROUGH
+        // CURRENTLY I AM TOGGLING BACK AND FORTH BETWEEN THE INITIAL CARDS DISPLAYED
+        // BUT I NEED TO TOGGLE BETWEEN ONLY THOSE CARDS WHOSE DISPLAY PROPERTY IS NOT "NONE"
+        // THE CHALLENGE I AM FACING IS THAT I DO NOT KNOW HOW TO TIE THE CURRENT MODAL CARD
+        // AND IT'S INDEX BACK TO THE NEW ARRAY?
         if (cardIndexDisplayed > 0) {
           cardIndexDisplayed -= 1;
           modalWindow.info.innerHTML = buildModalCardInfo(
@@ -176,16 +172,42 @@ function closeModalWindow(event) {
   }
 }
 
+function handleSeachFeature() {
+  // Function will fire an event when input changes and will test the name value against the search term
+  const searchBar = displaySearchFeature();
+  const cards = Array.from(document.querySelectorAll("div.gallery .card"));
+  searchBar.addEventListener("input", event => {
+    const searchValue = event.target.value;
+    const regex = new RegExp(searchValue, "i");
+    cards.forEach(card => {
+      const name = card.querySelector("#name").textContent;
+      if (!regex.test(name)) {
+        card.style.display = "none";
+      } else {
+        card.style.display = "flex";
+      }
+    });
+  });
+}
+
+function displaySearchFeature() {
+  const searchContainer = document.querySelector(".search-container");
+  const searchHTML = `
+    <form action="#" method="get">
+      <input type="search" id="search-input" class="search-input" placeholder="Search...">
+      <input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit">
+    </form>
+  `;
+  searchContainer.innerHTML = searchHTML;
+  return document.querySelector("#search-input");
+}
+
 // EVENT LISTENERS ==============================
 
 window.onload = function() {
   getDataFromServer(usersUrl)
     .then(data => generateGalleryCards(data.results))
-    .then(data => attachEventListener(data));
+    .then(data => attachCardListener(data))
+    .then(handleSeachFeature)
+    .catch(err => console.log(Error(err)));
 };
-
-//TODO's
-//   (1) Insert the search feature and dynamically search through cards
-//   (2) How do we filter the cards for the matching results?
-//        -Remove the cards?
-//        -Sort the cards?
