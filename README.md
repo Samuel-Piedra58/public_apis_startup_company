@@ -12,8 +12,8 @@ When the page loads you will see 12 random employees rendered, each with their o
 
 There are several aspects of this project that were edited from the original styling. Part of the project suggests taking a crack at editing the styling and interactivity of the webpage separate from what was supplied by Treehouse. The reader of the source code will notice those changes applied at the end of the [styles.css](css/styles.css) file. Below is a list of the following features/styles updated for this project:
 
-    - HTML Background Image set to the following [pattern](images/pw_maze_white.png).
-    - Header Background-Color set to a CSS gradient and included border-bottom property.
-    - Included box-shadow and thicker and darker borders for each employee card.
-    - On hover the card will transition to the background color: rgb(255, 224, 189).
-    - In the event the API request fails, an error message will render for the user.
+- HTML Background Image set to the following [pattern](images/pw_maze_white.png).
+- Header Background-Color set to a CSS gradient and included border-bottom property.
+- Included box-shadow and thicker and darker borders for each employee card.
+- On hover the card will transition to the background color: rgb(255, 224, 189).
+- In the event the API request fails, an error message will render for the user.
