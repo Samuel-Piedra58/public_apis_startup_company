@@ -285,6 +285,7 @@ html {
 
 header {
   background: linear-gradient(to left, #607cf7, #fccb93);
+  border-bottom: 2px black solid;
 }
 
 header h1 {
@@ -301,4 +302,5 @@ header h1 {
   border: 2px solid rgba(25, 25, 25, 1);
   transition: 0.8s ease-out;
   overflow: hidden;
+  box-shadow: 2px 2px 5px black;
 }
