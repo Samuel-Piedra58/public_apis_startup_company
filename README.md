@@ -2,6 +2,8 @@
 
 This project is part of the Treehouse Full Stack JavaScript Techdegree program. This repository will contain the files relating to project 5.
 
+A mock employee directory for a fake company. This project implemented AJAX, modern JavaScript syntax and Web Api's to create asynchronous requests to a public REST API. The random user data was generated using [randomuser.me](https://randomuser.me/) and their public api.
+
 ## Awesome Startup Employee Directory
 
 This project makes use of the fetch Web API to build a dynamic page that displays a list of random employees that work at an "Awesome Startup Company."
